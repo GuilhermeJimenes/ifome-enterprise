@@ -28,7 +28,6 @@ class RabbitMQ:
             raise RabbitMQError("Erro ao conectar ao RabbitMQ.") from error
 
     def new_queue(self, queue_name):
-        print(f'nova fila: {queue_name}')
         try:
             self._channel.queue_declare(queue=queue_name)
         except AMQPError as error:

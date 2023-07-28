@@ -29,13 +29,26 @@ class SalesCore:
     def update_delivery(self, deliveryman_id, delivery_id):
         if deliveryman_id and delivery_id:
             self.deliveries_storage.update(deliveryman_id, delivery_id)
+        else:
+            print(deliveryman_id)
+            print(delivery_id)
 
-    def update_deliveryman(self):
-        pass
-        # definir entregador como ocupado
+    def update_deliveryman(self, deliveryman_id):
+        if deliveryman_id:
+            return self.deliveryman_storage.update(deliveryman_id)
+        else:
+            print(deliveryman_id)
+
+    def send_delivery(self, delivery_id):
+        if delivery_id:
+            self.sales_message_broker.notify_deliveryman(delivery_id)
+        else:
+            print(delivery_id)
 
     def sales(self):
         delivery_id = self.get_delivery_id()
         deliveryman_id = self.get_deliveryman_id()
         self.update_delivery(deliveryman_id, delivery_id)
+        self.update_deliveryman(deliveryman_id)
+        self.send_delivery(delivery_id)
         return delivery_id
