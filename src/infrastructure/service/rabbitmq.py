@@ -43,17 +43,21 @@ class RabbitMQ:
             print(error)
             raise RabbitMQError("Erro ao publicar a mensagem no RabbitMQ.") from error
 
-    def consume(self, queue_name):
-        def callback(ch, method, properties, body):
-            print(f" [x] Mensagem recebida: {body.decode('utf-8')}")
+    def consume(self, queue_name, result_queue):
+        def callback(ch, method, properties, body, result_queue):
+            result_queue.put(body.decode())
+            ch.basic_ack(delivery_tag=method.delivery_tag)
+
+        self._channel.basic_consume(
+            queue=queue_name, on_message_callback=lambda ch, method, properties, body: callback(
+                ch, method, properties, body, result_queue
+            )
+        )
 
         try:
-            self._channel.basic_consume(queue=queue_name, on_message_callback=callback, auto_ack=True)
-            print(' [*] Aguardando mensagens. Pressione CTRL+C para sair.')
             self._channel.start_consuming()
-        except AMQPError as error:
-            print(error)
-            raise RabbitMQError("Erro ao consumir mensagens do RabbitMQ.") from error
+        except KeyboardInterrupt:
+            self._channel.stop_consuming()
 
     def connection_close(self):
         try:

@@ -10,6 +10,5 @@ class SalesMessageBrokerRabbitMQ(RabbitMQ, SalesMessageBroker):
         self.new_queue(self.queue_name)
         self.publish(self.queue_name, message)
 
-    def consume_buy(self):
-        self.new_queue(self.queue_name)
-        self.consume(self.queue_name)
+    def consume_buy(self, result_queue):
+        self.consume(self.queue_name, result_queue)

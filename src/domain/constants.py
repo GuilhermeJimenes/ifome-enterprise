@@ -1,5 +1,4 @@
 CONFIG_PATH = "src/infrastructure/config/"
-CELERY_CONFIG = 'celeryconfig.py'
 
 # BD
 STORAGE_TYPE = "mysql"
