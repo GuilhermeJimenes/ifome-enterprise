@@ -1,13 +1,13 @@
 from src.domain.interfaces.user_interface import UserStorage
 from src.domain.models.user_model import UserModel
 from src.exceptions.custom_exceptions import NotFoundFail
-from src.infrastructure.config_storage import ConfigStorage
+from src.infrastructure.config.config_storage import ConfigStorage
 from src.infrastructure.service.mysql import MySQL
 
 
 class UserStorageMySQL(MySQL, UserStorage):
     def __init__(self):
-        super(MySQL, self).__init__(ConfigStorage)
+        super(UserStorageMySQL, self).__init__(ConfigStorage)
         self.create_table()
 
     def create_table(self):

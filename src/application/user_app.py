@@ -1,15 +1,20 @@
 from src.api.http.http_response import HttpResponse
+from src.domain.constants import STORAGE_TYPE
 from src.domain.core.user_core import GetAllUsersCore, GetUserByIdCore, CreateUserCore
 from src.domain.interfaces.user_interface import UserStorage
 from src.exceptions.custom_exceptions import NotFoundFail, InvalidInputFail, RabbitMQError
 from src.infrastructure.user_storage_mysql import UserStorageMySQL
-# from src.infrastructure.user_storage_sqlite import UserStorageSQLite
+from src.infrastructure.user_storage_sqlite import UserStorageSQLite
 
 
 class UserApp:
     def __init__(self):
-        # self.user_storage: UserStorage = UserStorageSQLite()
-        self.user_storage: UserStorage = UserStorageMySQL()
+        if STORAGE_TYPE == "mysql":
+            self.user_storage: UserStorage = UserStorageMySQL()
+        elif STORAGE_TYPE == "sqlite":
+            self.user_storage: UserStorage = UserStorageSQLite()
+        else:
+            raise ValueError("Invalid storage, valid types: sqlite, mysql")
 
     def get_all_users(self):
         try:

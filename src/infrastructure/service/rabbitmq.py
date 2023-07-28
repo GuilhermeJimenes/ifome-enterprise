@@ -1,15 +1,14 @@
 import pika
 from pika.exceptions import AMQPConnectionError, AMQPError
 
-from src.domain.constants import HOST_MESSAGE_BROKER_USER
+from src.domain.constants import HOST_MSG_BROKER
 from src.exceptions.custom_exceptions import RabbitMQError
 
 
 class RabbitMQ:
     def __init__(self):
-        self.host = HOST_MESSAGE_BROKER_USER
+        self.host = HOST_MSG_BROKER
         self._connection, self._channel = self.connection(self.host)
-        self.message = []
 
     def connection(self, host):
         try:
@@ -29,6 +28,7 @@ class RabbitMQ:
             raise RabbitMQError("Erro ao conectar ao RabbitMQ.") from error
 
     def new_queue(self, queue_name):
+        print(f'nova fila: {queue_name}')
         try:
             self._channel.queue_declare(queue=queue_name)
         except AMQPError as error:
@@ -43,21 +43,13 @@ class RabbitMQ:
             print(error)
             raise RabbitMQError("Erro ao publicar a mensagem no RabbitMQ.") from error
 
-    def callback_unitary(self, channel, method, properties, body):
-        message = body.decode('utf-8')
-        print(f"Mensagem recebida: {message}")
-        self.message.append(message)
-        self._channel.stop_consuming()
-
-    def callback_forever(self, channel, method, properties, body):
-        message = body.decode('utf-8')
-        print(f"Mensagem recebida: {message}")
-        self.message.append(message)
-
     def consume(self, queue_name):
+        def callback(ch, method, properties, body):
+            print(f" [x] Mensagem recebida: {body.decode('utf-8')}")
+
         try:
-            self._channel.basic_consume(queue=queue_name, on_message_callback=self.callback_unitary, auto_ack=True)
-            print('Aguardando mensagens...')
+            self._channel.basic_consume(queue=queue_name, on_message_callback=callback, auto_ack=True)
+            print(' [*] Aguardando mensagens. Pressione CTRL+C para sair.')
             self._channel.start_consuming()
         except AMQPError as error:
             print(error)

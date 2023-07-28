@@ -7,7 +7,7 @@ from src.infrastructure.service.sqlite import SQLite
 
 class UserStorageSQLite(SQLite, UserStorage):
     def __init__(self):
-        super(SQLite, self).__init__(STORAGE_SQLITE_PATH)
+        super(UserStorageSQLite, self).__init__(STORAGE_SQLITE_PATH)
         self.create_table()
 
     def create_table(self):

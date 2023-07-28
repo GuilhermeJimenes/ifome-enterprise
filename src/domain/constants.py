@@ -1,5 +1,13 @@
-STORAGE_SQLITE_NAME = "database.db"
-STORAGE_SQLITE_PATH = f"src/infrastructure/{STORAGE_SQLITE_NAME}"
-DELIVERY_QUEUE_NAME = "delivery"
-HOST_MESSAGE_BROKER_USER = "localhost"
-DELIVERY_STATUS = ['accepted', 'preparing', 'available for delivery', 'delivering', 'delivered']
+CONFIG_PATH = "src/infrastructure/config/"
+CELERY_CONFIG = 'celeryconfig.py'
+
+# BD
+STORAGE_TYPE = "mysql"
+MESSAGE_BROKER_TYPE = "rabbitmq"
+
+STORAGE_SQLITE_NAME = "ifome.db"
+STORAGE_SQLITE_PATH = f"{CONFIG_PATH}{STORAGE_SQLITE_NAME}"
+
+# MESSAGE_BROKER
+BUY_QUEUE = "buy"
+HOST_MSG_BROKER = "localhost"

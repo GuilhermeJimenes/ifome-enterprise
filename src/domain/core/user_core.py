@@ -1,5 +1,4 @@
 from src.domain.interfaces.user_interface import UserStorage
-from src.domain.interfaces.status_interface import StatusMessageBroker
 from src.domain.models.user_model import UserModel
 from src.exceptions.custom_exceptions import InvalidInputFail
 from src.utils.email import is_valid_email
