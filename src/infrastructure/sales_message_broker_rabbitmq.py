@@ -4,7 +4,7 @@ from src.infrastructure.service.rabbitmq import RabbitMQ
 
 
 class SalesMessageBrokerRabbitMQ(RabbitMQ, SalesMessageBroker):
-    def notify_deliveryman(self, message):
+    def publish_deliveryman(self, message):
         self.new_queue(DELIVERY_QUEUE)
         self.publish(DELIVERY_QUEUE, message)
 

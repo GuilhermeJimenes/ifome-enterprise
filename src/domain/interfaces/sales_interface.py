@@ -1,5 +1,5 @@
 class SalesMessageBroker:
-    def notify_deliveryman(self, message):
+    def publish_deliveryman(self, message):
         raise NotImplementedError()
 
     def consume_buy(self):

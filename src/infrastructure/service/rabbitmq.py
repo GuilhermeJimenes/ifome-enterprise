@@ -2,13 +2,13 @@ from time import sleep
 
 import pika
 
-from src.domain.constants import HOST_MSG_BROKER
+from src.domain.constants import HOST_MESSAGE_BROKER
 from src.exceptions.custom_exceptions import RabbitMQError
 
 
 class RabbitMQ:
     def __init__(self):
-        self.host = HOST_MSG_BROKER
+        self.host = HOST_MESSAGE_BROKER
         self.connection, self.channel = self.connect()
         self.method_frame = None
 

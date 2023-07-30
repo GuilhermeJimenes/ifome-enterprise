@@ -26,7 +26,7 @@ class SalesCore:
 
     def send_delivery(self, delivery_id):
         if delivery_id:
-            self.sales_message_broker.notify_deliveryman(delivery_id)
+            self.sales_message_broker.publish_deliveryman(delivery_id)
 
     def sales(self):
         deliveryman_id = self.get_deliveryman_id()

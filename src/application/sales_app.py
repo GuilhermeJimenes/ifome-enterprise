@@ -35,9 +35,11 @@ class SalesApp:
             return response
         except NotFoundFail as error:
             print(error)
+            self.sales_message_broker.close_connection()
             return 'error'
         except KeyboardInterrupt as error:
             print(error)
+            self.sales_message_broker.close_connection()
             return 'error'
         except RabbitMQError as error:
             print(error)
