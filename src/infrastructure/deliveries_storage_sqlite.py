@@ -7,6 +7,21 @@ from src.infrastructure.service.sqlite import SQLite
 class DeliveriesStorageSQLite(SQLite, DeliveriesStorage):
     def __init__(self):
         super(DeliveriesStorageSQLite, self).__init__(STORAGE_SQLITE_PATH)
+        self.create_table()
+
+    def create_table(self):
+        create_table_query = (
+            "CREATE TABLE IF NOT EXISTS deliveries ("
+            "delivery_id TEXT PRIMARY KEY,"
+            "client_id TEXT,"
+            "food_name TEXT NOT NULL,"
+            "address TEXT NOT NULL,"
+            "deliveryman_id TEXT DEFAULT '',"
+            "status TEXT DEFAULT ''"
+            ")"
+        )
+
+        self.execute_query_one(create_table_query)
 
     def get_all(self):
         get_available_query = "SELECT * FROM deliveries"

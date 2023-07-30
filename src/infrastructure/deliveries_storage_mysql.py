@@ -8,6 +8,22 @@ from src.infrastructure.service.mysql import MySQL
 class DeliveriesStorageMySQL(MySQL, DeliveriesStorage):
     def __init__(self):
         super(DeliveriesStorageMySQL, self).__init__(ConfigStorage)
+        self.create_table()
+
+    def create_table(self):
+        create_table_query = (
+            "CREATE TABLE IF NOT EXISTS deliveries ("
+            "delivery_id VARCHAR(255) PRIMARY KEY,"
+            "client_id VARCHAR(255) NOT NULL,"
+            "food_name VARCHAR(255) NOT NULL,"
+            "address VARCHAR(255) NOT NULL,"
+            "deliveryman_id VARCHAR(255) DEFAULT '',"
+            "status VARCHAR(255) DEFAULT ''"
+            ")"
+        )
+
+        self.execute_query_one(create_table_query)
+        self.commit()
 
     def get_all(self):
         get_available_query = "SELECT * FROM deliveries"
