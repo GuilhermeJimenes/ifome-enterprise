@@ -3,6 +3,7 @@ from src.domain.core.sales_core import SalesCore
 from src.domain.interfaces.deliveryman_interface import DeliverymanStorage
 from src.domain.interfaces.deliveries_interface import DeliveriesStorage
 from src.domain.interfaces.sales_interface import SalesMessageBroker
+from src.exceptions.custom_exceptions import RabbitMQError, NotFoundFail
 from src.infrastructure.deliveryman_storage_mysql import DeliverymanStorageMySQL
 from src.infrastructure.deliveryman_storage_sqlite import DeliverymanStorageSQLite
 from src.infrastructure.deliveries_storage_mysql import DeliveriesStorageMySQL
@@ -27,6 +28,18 @@ class SalesApp:
             raise ValueError("Invalid message broker, valid types: rabbitmq")
 
     def sales(self):
-        sales_core = SalesCore(self.deliveryman_storage, self.deliveries_storage, self.sales_message_broker)
-        response = sales_core.sales()
-        return response
+        try:
+            sales_core = SalesCore(self.deliveryman_storage, self.deliveries_storage, self.sales_message_broker)
+            response = sales_core.sales()
+            self.sales_message_broker.consume_success()
+            return response
+        except NotFoundFail as error:
+            print(error)
+            return 'error'
+        except KeyboardInterrupt as error:
+            print(error)
+            return 'error'
+        except RabbitMQError as error:
+            print(error)
+            self.sales_message_broker.close_connection()
+            return 'error'
