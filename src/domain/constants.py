@@ -1,5 +1,12 @@
-STORAGE_SQLITE_NAME = "database.db"
-STORAGE_SQLITE_PATH = f"src/infrastructure/{STORAGE_SQLITE_NAME}"
-DELIVERY_QUEUE_NAME = "delivery"
-HOST_MESSAGE_BROKER_USER = "localhost"
-DELIVERY_STATUS = ['accepted', 'preparing', 'available for delivery', 'delivering', 'delivered']
+CONFIG_PATH = "src/infrastructure/config/"
+
+# BD
+STORAGE_TYPE = "mysql"
+STORAGE_SQLITE_NAME = "ifome.db"
+STORAGE_SQLITE_PATH = f"{CONFIG_PATH}{STORAGE_SQLITE_NAME}"
+
+# MESSAGE_BROKER
+BUY_QUEUE = "buy"
+DELIVERY_QUEUE = "delivery"
+HOST_MESSAGE_BROKER = "localhost"
+MESSAGE_BROKER_TYPE = "rabbitmq"
